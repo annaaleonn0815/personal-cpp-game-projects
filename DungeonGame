@@ -6,72 +6,85 @@ using namespace std;
 
 // Inventory struct to hold the player's items
 struct Inventory {
-int healthPotions;
-int magicPotions;
-int weapons;
-map<string, int> skills;
+    int healthPotions;
+    int magicPotions;
+    int weapons;
+    map<string, int> skills;
 };
 
 // Room struct to hold the details of each room in the game
 struct Room {
-string description;
-string type;
-int healthPotions;
-int magicPotions;
-int weapons;
-int monsterHealth;
-bool isBossRoom;
+    string description;
+    string type;
+    int healthPotions;
+    int magicPotions;
+    int weapons;
+    int monsterHealth;
+    bool isBossRoom;
 };
 
 // Function to display the player's inventory
 void DisplayInventory(Inventory inventory) {
-cout << "Health Potions: " << inventory.healthPotions << endl;
-cout << "Magic Potions: " << inventory.magicPotions << endl;
-cout << "Weapons: " << inventory.weapons << endl;
-cout << "Skills: " << endl;
-for (map<string, int>::iterator itr = inventory.skills.begin(); itr != inventory.skills.end(); itr++) {
-    cout << itr->first << ": " << itr->second << endl;
-}
-cout << endl;
+    cout << "Health Potions: " << inventory.healthPotions << endl;
+    cout << "Magic Potions: " << inventory.magicPotions << endl;
+    cout << "Weapons: " << inventory.weapons << endl;
+    cout << "Skills: " << endl;
+    for (map<string, int>::iterator itr = inventory.skills.begin(); itr != inventory.skills.end(); itr++) {
+        cout << itr->first << ": " << itr->second << endl;
+    }
+    cout << endl;
 }
 
 // Function to handle the boss battle
 void BossBattle(Inventory &inventory, Room &currentRoom) {
-while (inventory.healthPotions > 0 && currentRoom.monsterHealth > 0) {
-cout << "What would you like to do?" << endl;
-cout << "1. Use health potion" << endl;
-cout << "2. Use magic potion" << endl;
-cout << "3. Use weapon" << endl;
-cout << "4. Use skill" << endl;
-int playerChoice;
-cin >> playerChoice;
-switch (playerChoice) {
-case 1:
-    if (inventory.healthPotions > 0) {
-        inventory.healthPotions--;
-        cout << "You used a health potion. Health Potions left: " << inventory.healthPotions << endl;
-    } else {
-        cout << "You don't have any health potions left." << endl;
-    }
-    break;
-case 2:
-    if (inventory.magicPotions > 0) {
-        inventory.magicPotions--;
-        cout << "You used a magic potion. Magic Potions left: " << inventory.magicPotions << endl;
-    } else {
-        cout << "You don't have any magic potions left." << endl;
-    }
-    break;
-case 3:
-    if (inventory.weapons > 0) {
-        inventory.weapons--;
-        currentRoom.monsterHealth -= 10;
-        cout << "You used a weapon. Boss health: " << currentRoom.monsterHealth << endl;
-    } else {
-        cout << "You don't have any weapons left." << endl;
-    }
-    break;
-case 4:
-    cout << "Which skill would you like to use?" << endl;
-    for (map<string, int>::iterator itr = inventory.skills.begin(); itr != inventory.skills.end(); itr++) {
-        cout << itr->first << ": " << itr->second << endl;
+    cout << "You have entered the boss room!" << endl;
+    cout << "Prepare for battle!" << endl;
+
+    while (inventory.healthPotions > 0 && currentRoom.monsterHealth > 0) {
+        cout << "What would you like to do?" << endl;
+        cout << "1. Use health potion" << endl;
+        cout << "2. Use magic potion" << endl;
+        cout << "3. Use weapon" << endl;
+        cout << "4. Use skill" << endl;
+        int playerChoice;
+        cin >> playerChoice;
+        switch (playerChoice) {
+            case 1:
+                if (inventory.healthPotions > 0) {
+                    inventory.healthPotions--;
+                    cout << "You used a health potion. Health Potions left: " << inventory.healthPotions << endl;
+                } else {
+                    cout << "You don't have any health potions left." << endl;
+                }
+                break;
+            case 2:
+                if (inventory.magicPotions > 0) {
+                    inventory.magicPotions--;
+                    cout << "You used a magic potion. Magic Potions left: " << inventory.magicPotions << endl;
+                } else {
+                    cout << "You don't have any magic potions left." << endl;
+                }
+                break;
+            case 3:
+                if (inventory.weapons > 0) {
+                    inventory.weapons--;
+                    currentRoom.monsterHealth -= 10;
+                    cout << "You used a weapon. Boss health: " << currentRoom.monsterHealth << endl;
+                } else {
+                    cout << "You don't have any weapons left." << endl;
+                }
+                break;
+            case 4:
+                cout << "Which skill would you like to use?" << endl;
+                for (map<string, int>::iterator itr = inventory.skills.begin(); itr != inventory.skills.end(); itr++) {
+                    cout << itr->first << ": " << itr->second << endl;
+                }
+                string skillChoice;
+                cin >> skillChoice;
+                if (inventory.skills.count(skillChoice) > 0) {
+                    currentRoom.monsterHealth -= inventory.skills[skillChoice];
+                    cout << "You used " << skillChoice << ". Boss health: " << currentRoom.monsterHealth << endl;
+                } else {
+                    cout << "You don't have that skill." << endl;
+               
+
